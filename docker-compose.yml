@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   mysql:
     image: mysql:8.0
@@ -10,7 +12,8 @@ services:
       - "3307:3306"
     volumes:
       - ./mysql-data:/var/lib/mysql
-
+    networks:
+      - aw-network
   backend:
     build:
       context: .
@@ -29,10 +32,10 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run dev
+    command: sh -c "npx prisma generate && npm run dev"
     networks:
       - aw-network
 
-  networks:
-   aw-network:
+networks:  
+  aw-network:
     driver: bridge
