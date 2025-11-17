@@ -7,15 +7,25 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum UserRole {
+  ADMIN
+  MEMBER
+}
+
+
 model User {
   id        String     @id @default(uuid())
-  name      String
+  firstName String
+  lastName  String
+  nickName  String     @unique
   email     String     @unique
   password  String
+  role      UserRole   @default(MEMBER) 
   createdAt DateTime   @default(now())
-  updatedAt DateTime? 
+  updatedAt DateTime?
   media     UserMedia[]
   comments  Comment[]
+  medias    Media[]
 }
 model Media {
   id          String     @id @default(uuid())
@@ -27,8 +37,13 @@ model Media {
   image       String?     
   rating      Int?
   description String?
+  createdAt   DateTime   @default(now())
+  userId      String
   users       UserMedia[]
   comments    Comment[]
+  user        User        @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "Media_userId_fkey")
 }
 
 
@@ -46,6 +61,7 @@ model UserMedia {
   media  Media @relation(fields: [mediaId], references: [id])
 
   @@unique([userId, mediaId]) // impede duplicar o mesmo filme para o mesmo user
+  @@index([mediaId], map: "UserMedia_mediaId_fkey")
 }
 
 model Comment {
@@ -57,6 +73,9 @@ model Comment {
 
   user   User  @relation(fields: [userId], references: [id])
   media  Media @relation(fields: [mediaId], references: [id])
+
+  @@index([userId], map: "Comment_userId_fkey")
+  @@index([mediaId], map: "Comment_mediaId_fkey")
 }
 
 enum MediaType {

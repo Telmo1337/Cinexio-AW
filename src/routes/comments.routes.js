@@ -1,7 +1,7 @@
 // routes/comments.routes.js
 import { Router } from "express";
 import { prisma } from "../db/prisma.js";
-import { verifyToken } from "../middlewares/verifyToken.js";
+import { verifyToken } from "../utils/auth.js";
 import { z } from "zod";
 
 const commentRouter = Router();
@@ -33,7 +33,7 @@ commentRouter.get("/:mediaId", async (req, res, next) => {
   try {
     const comments = await prisma.comment.findMany({
       where: { mediaId: req.params.mediaId },
-      include: { user: { select: { id: true, name: true } } },
+      include: { user: { select: { id: true, nickName: true } } },
     });
     res.json(comments);
   } catch (err) {

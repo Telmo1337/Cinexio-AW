@@ -1,3 +1,5 @@
+//ficheiro que representa as rotas de autenticação (registo e login)
+
 //importar dependencias
 import { Router } from "express";
 import { prisma } from "../db/prisma.js";
@@ -12,7 +14,9 @@ const authRouter = Router();
 //validar os dados para o registo
 const registerSchema = z.object({
     email: z.string().email("Invalid email"),
-    name: z.string().min(2, "Short name"),
+    firstName: z.string().min(2, "Short name"),
+    lastName: z.string().min(2, "Short last name"),
+    nickName: z.string().min(2, "Short nickname"),
     password: z.string().min(6, "Your password must have at least 6 caracters"),
 
 });
@@ -35,21 +39,37 @@ authRouter.post("/register", async (req, res, next) => {
         }
 
 
-        const { email, name, password } = result.data;
-
+        const { email, firstName, lastName, nickName, password } = result.data;
         //verificar se o user já existe
-        const existingUser = await prisma.user.findUnique({ where: { email } });
+        const existingUser = await prisma.user.findFirst({
+            where: {
+                OR: [
+                    { email },
+                    { nickName }
+                ]
+            }
+        });
+
         if (existingUser) {
-            return res.status(400).json({ err: "Email already in use" })
+            return res.status(400).json({
+                err: existingUser.email === email
+                    ? "Email already in use"
+                    : "Nickname already in use"
+            });
         }
+
+
+        //verificar se é o primeiro user - atribuir role ADMIN
+        const userCount = await prisma.user.count();
+        const role = userCount === 0 ? "ADMIN" : "MEMBER";
 
 
         //encriptar password HASH PASSWORD
         const hashedPassword = await hashPassword(password);
 
-        //criar user
+        //criar user (sempre role MEMBER por defeito)
         const user = await prisma.user.create({
-            data: { email, name, password: hashedPassword },
+            data: { email, firstName, lastName, nickName, password: hashedPassword, role },
         });
 
         //criar token jwt
@@ -59,11 +79,20 @@ authRouter.post("/register", async (req, res, next) => {
         const { password: _, ...userWithoutPassword } = user;
 
         //send response
-        res.status(201).json({ user: userWithoutPassword, token });
+        res.status(201).json({
+            user: {
+                id: userWithoutPassword.id,
+                email: userWithoutPassword.email,
+                firstName: userWithoutPassword.firstName,
+                lastName: userWithoutPassword.lastName,
+                nickName: userWithoutPassword.nickName,
+                createdAt: userWithoutPassword.createdAt,
+            }, token
+        });
 
     } catch (err) {
         next(err);
-    } 
+    }
 })
 
 
@@ -81,7 +110,10 @@ authRouter.post('/login', async (req, res, next) => {
         const { email, password } = result.data;
 
         //verificar se o user já existe
-        const user = await prisma.user.findUnique({ where: {email} });
+        const user = await prisma.user.findUnique({
+            where: { email },
+            select: { id: true, email: true, firstName: true, lastName: true, nickName: true, password: true, createdAt: true, role: true }
+        });
         if (!user) {
             return res.status(404).json({ err: "User not found" })
         }
@@ -103,7 +135,6 @@ authRouter.post('/login', async (req, res, next) => {
         res.status(200).json({ user: userWithoutPassword, token })
 
     } catch (err) {
-        console.error(err);
         next(err)
     }
 })

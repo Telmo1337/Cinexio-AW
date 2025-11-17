@@ -21,7 +21,7 @@ export async function checkPassword(password, hashedPassword) {
 export function generateToken(payload){
     
     const token = jwt.sign(
-        {id: payload.id, email:payload.email}, //dados codificados
+        {id: payload.id, email:payload.email, role: payload.role}, //dados codificados
         process.env.JWT_SECRET, // secret key do .env
         { expiresIn: "7d"} //tempo de validade do token
      )
@@ -29,38 +29,36 @@ export function generateToken(payload){
 
      console.log("Token created: ", token)
      return token;
-}
+}S
 
 
-//middleware para proteger as rotas (verificação do token se é válido)
-export async function authGuard (req, res, next) {
-    
+//middleware to verify token
+export const verifyToken = (req, res, next) => {
 
     const authHeader = req.headers.authorization;
 
-    //o token vem no header "Authorization: Bearer (e o token)"
-    if(!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({err: "Token not given"})
+    if(!authHeader || !authHeader.startsWith("Bearer ")){
+        return res.status(401).json({err: "No token provided"});
     }
 
-    const token = authHeader.split(" ")[1]; //retira apenas o token
+    const token = authHeader.split(" ")[1];
 
-    try{
-
-        //verificar se o token é válido
+    try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        //armazenar os dados do user decoded no objeto req
         req.user = decoded;
-
-        //avança para a rota seguinte
         next();
-
-    }catch(err){
-        console.log(err);
-        return res.status(403).json({err: "Invalid or expired token"})
+    } catch (err) {
+        return res.status(403).json({ err: "Invalid token" });
     }
+}
 
+
+//middleware to require admin role
+export function requireAdmin(req, res, next) {
+  if (req.user.role !== "ADMIN") {
+    return res.status(403).json({ err: "Access denied. Admins only." });
+  }
+  next();
 }
 
 

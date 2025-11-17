@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {prisma} from '../db/prisma.js';
-import { verifyToken } from '../middlewares/verifyToken.js';
+import { verifyToken } from '../utils/auth.js';
 
 
 const libraryRouter = Router();
@@ -74,5 +74,24 @@ libraryRouter.get("/", verifyToken, async (req, res, next) => {
     next(err);
   }
 });
+
+
+//remover um media da biblioteca do user (mas nao da bd)
+libraryRouter.delete("/:mediaId", verifyToken, async (req, res, next) => {
+    try{
+        await prisma.userMedia.delete({
+            where: {
+                userId_mediaId: {
+                    userId: req.user.id,
+                    mediaId: req.params.mediaId,
+                },
+            },
+        });
+
+        res.status(200).json({message: "Media removed from library"});
+    }catch(err){
+        next(err);
+    }
+})
 
 export default libraryRouter;
