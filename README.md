@@ -80,7 +80,7 @@ A base de dados contém quatro tabelas principais:
 | --- | --- | --- | --- |
 | User | Guarda dados dos utilizadores (login e perfil). | 1:N → UserMedia, 1:N → Comment | Principal |
 | Media | Contém os dados dos filmes e séries (título, tipo, categoria, ano, imagem). | 1:N → UserMedia, 1:N → Comment | Principal |
-| UserMedia | Liga o utilizador ao conteúdo, registando o estado pessoal (favorito, visto, notas, rating, calendário). | N:1 → User, N:1 → Media | Intermédia |
+| UserMedia | Liga o utilizador ao conteúdo, registando o estado pessoal (favorite, watched, notes, rating, calendarAt). | N:1 → User, N:1 → Media | Intermédia |
 | Comment | Armazena comentários dos utilizadores sobre filmes e séries. | N:1 → User, N:1 → Media | Intermédia |
 
 #### Explicação do Modelo Relacional
@@ -121,6 +121,21 @@ O sistema de autenticação baseia-se em **JWT (JSON Web Token)**, garantindo qu
 
 * * *
 
+### Sistema de Roles e Permissões
+
+A API implementa também um sistema simples de permissões baseado em roles, atribuído durante o registo:
+
+ * o primeiro utilizador criado na BD recebe automaticamente o papel de ADMIN;
+ * Todos os utilizadores seguintes são registados com o papel MEMBER.
+
+ Este sistema permite criar áreas restritas para administração e gestão.
+
+### Rota exclusiva para ADMIN
+
+`GET /api/v1/users`
+
+* * *
+
 ### Middlewares
 
 | Middleware | Função |
@@ -132,19 +147,63 @@ O sistema de autenticação baseia-se em **JWT (JSON Web Token)**, garantindo qu
 
 * * *
 
-### Docker
+### Instalação e Execução (com Docker)
 
-O projeto utiliza **Docker** para criar e gerir o container do MySQL.  
-O ficheiro `docker-compose.yml` define o serviço principal da base de dados.
+Este projeto foi desenvolvido para ser executado integralmente em Docker, evitando configuração manuais na máquina do utilizador.
 
-#### Comandos principais:
+O sistema levanta automaticamente:
 
-*   `docker compose up -d` – inicia o container
-    
-*   `docker compose down` – remove o container
-    
-*   `docker exec -it aw-mysql mysql -uroot -proot media_app` – acede à base de dados
-    
+* um container MySQL;
+* um container Nodejs/Express com o backend;
+* rede docker partilhada;
+* volumes persistentes para os dados.
+
+
+#### 1. Clonar o repositório:
+
+* `git clone https://github.com/Telmo1337/Aplica-es-Web---Projeto-Backend`
+
+* `cd <nome da pasta>`
+
+#### 2. Criar o ficheiro .env (ou usar .env.example)
+
+* ` DATABASE_URL="mysql://root:root@mysql:3306/media_app"
+  JWT_SECRET="super_secret_key"
+  PORT=5050
+  MYSQL_ROOT_PASSWORD=root
+  MYSQL_DATABASE=media_app`
+
+Este ficheiro é usado tanto pelo Prisma como pelo Docker compose.
+
+#### 3. Subir toda a stack com o Docker
+
+No terminal:
+* `docker compose up -d`
+
+O docker vai automaticamente:
+    * criar o container MySQL;
+    * criar o container do backend;
+    * instalar dependências (npm install);
+    * gerar o Prisma client (npx prisma generate);
+    * arrancar o servidor com npm run dev
+
+#### 4. Executar migrações (se necessário)
+
+No terminal:
+* `docker exec -it aw-backend npx prisma migrate dev --name init`
+
+#### Lista de comandos principais de gestão:
+
+\`docker compose up -d          # iniciar os serviços
+
+docker compose down           # desligar containers
+
+docker compose down -v        # desligar e apagar volumes (reset da BD)
+
+docker exec -it aw-mysql sh   # entrar no container MySQL
+
+docker exec -it aw-backend sh # entrar no container do backend \`
+
 
 * * *
 
@@ -164,46 +223,33 @@ O ficheiro `docker-compose.yml` define o serviço principal da base de dados.
 
 * * *
 
-### Instalação e Execução
-
-1.  **Clonar o repositório:**
-    
-    `git clone <url> cd projeto-backend`
-    
-2.  **Instalar dependências:**
-    
-    `npm install`
-    
-3.  **Criar o ficheiro .env:**
-    
-    `PORT=5050 DATABASE_URL="mysql://root:root@localhost:3307/media_app" JWT_SECRET="chave_super_secreta"`
-    
-4.  **Executar o Docker e as migrações:**
-    
-    `docker compose up -d npx prisma migrate dev --name init`
-    
-5.  **Iniciar o servidor:**
-    
-    `npm run dev`
-    
-    Servidor disponível em: [http://localhost:5050](http://localhost:5050)
-    
-
-* * *
-
 ### Exemplos de Endpoints
 
 #### Registar Utilizador
 
 **POST** `/api/v1/auth/register`
 
-`{   "name": "Telmo",   "email": "telmo@ipvc.pt",   "password": "teste1234" }`
+`{ 
+   "email": "telmo@ipvc.pt", 
+   "firstName": "Telmo", 
+   "lastName": "Regalado", 
+   "nickName": "TR25", 
+   "password": "teste1234" 
+}`
 
 #### Adicionar Filme/Série
 
 **POST** `/api/v1/media`
 
-`{   "title": "O Resgate do Soldado Ryan",   "type": "MOVIE",   "category": "Drama, Guerra",   "releaseYear": 1998,   "rating": 8.9,   "description": "Depois de chegar à Normandia...",   "image": "https://m.media-amazon.com/images/...jpg" }`
+`{   
+   "title": "O Resgate do Soldado Ryan",   
+   "type": "MOVIE",   
+   "category": "Drama, Guerra",   
+   "releaseYear": 1998,   
+   "rating": 8.9,   
+   "description": "Depois de chegar à Normandia...",   
+   "image": "https://m.media-amazon.com/images/...jpg" 
+}`
 
 #### Adicionar à Biblioteca
 
