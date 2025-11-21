@@ -1,39 +1,43 @@
 services:
   mysql:
-    image: mysql:8.0.44
+    image: mysql:8.0
     container_name: aw-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: media_app
     ports:
-      - "4306:3306"
+      - "3307:3306"
     volumes:
-      - ./mysql-data:/var/lib/mysql
-    networks:
-      - aw-network
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: aw-backend
-    restart: always
-    depends_on:
-      - mysql
-    environment:
-      DATABASE_URL: mysql://root:root@mysql:3306/media_app
-      JWT_SECRET: ${JWT_SECRET}
-      PORT: ${PORT}
-      NODE_ENV: development
-    ports:
-      - "${PORT}:${PORT}"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: sh -c "npx prisma generate && npm run dev"
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost --silent"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 40s
     networks:
       - aw-network
 
-networks:  
+  backend:
+    build: .
+    container_name: aw-backend
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      PORT: 5050
+      JWT_SECRET: super_secret_key
+      DATABASE_URL: "mysql://root:root@mysql:3306/media_app"
+    ports:
+      - "5050:5050"
+    networks:
+      - aw-network
+
+networks:
   aw-network:
     driver: bridge
+
+volumes:
+  db_data:

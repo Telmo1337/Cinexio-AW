@@ -1,9 +1,7 @@
-# Ignorar node_modules e ficheiros do MySQL no build context
-node_modules
-mysql-data
+node_modules/
+mysql-data/
 npm-debug.log
-Dockerfile
-docker-compose.yml
-.git
-.gitignore
+*.log
 .env
+.prisma
+.vscode/
