@@ -27,9 +27,10 @@ const registerSchema = z.object({
 
 //validação dos dados para o login
 const loginSchema = z.object({
-    email: z.string().email("Invalid email"),
+    identifier: z.string().min(1, "Email or nickname is required"),
     password: z.string().min(1, "Password is required"),
 });
+
 
 
 //rota registar
@@ -117,11 +118,16 @@ authRouter.post('/login', async (req, res, next) => {
             return res.status(400).json({ errors: result.error.flatten().fieldErrors })
         }
 
-        const { email, password } = result.data;
+        const { identifier, password } = result.data;
 
         //verificar se o user já existe
-        const user = await prisma.user.findUnique({
-            where: { email },
+        const user = await prisma.user.findFirst({
+            where: {
+                OR: [
+                    { email: identifier },
+                    { nickName: identifier }
+                ]
+            },
             select: { id: true, email: true, firstName: true, lastName: true, nickName: true, password: true, createdAt: true, role: true }
         });
         if (!user) {
@@ -151,6 +157,7 @@ authRouter.post('/login', async (req, res, next) => {
         res.status(200).json({ user: userWithoutPassword, token })
 
     } catch (err) {
+        console.log("LOGIN ERROR:", err);
         next(err)
     }
 })
