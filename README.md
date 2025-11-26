@@ -114,12 +114,21 @@ This project includes a Postman collection containing all API endpoints, as well
 4. Set the Environment as active
 5. Register and Run the Login endpoint to automatically generate and save the token and other variables.
 
-**Collection**
-<img width="250" height="767" alt="image" src="https://github.com/user-attachments/assets/e9806e97-d2a8-4920-9206-7b5aa2f89245" />
 
+### Collection and Environment Variables
+<div style="display: flex; gap: 20px;">
 
-**Environment variables**
-<img width="317" height="302" alt="image" src="https://github.com/user-attachments/assets/c46359b8-e84a-4d4a-ac27-af634695c8f8" />
+  <div>
+    <h4><strong>Collection</strong></h4>
+    <img src="https://github.com/user-attachments/assets/e9806e97-d2a8-4920-9206-7b5aa2f89245" width="250" />
+  </div>
+
+  <div>
+    <h4><strong>Environment Variables</strong></h4>
+    <img src="https://github.com/user-attachments/assets/c46359b8-e84a-4d4a-ac27-af634695c8f8" width="250" />
+  </div>
+
+</div>
 
 ---
 
