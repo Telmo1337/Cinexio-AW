@@ -1,14 +1,13 @@
-<<<<<<< HEAD
+
 <p align="center">
   <img src="cinexio.svg" alt="Cinexio Logo" width="180" />
 </p>
+
 # Web Applications - Movie & Series Management API
 =======
 # CINEXIO - Web Applications Movie & Series Management API 
->>>>>>> 2590b2dbae093e9eb62f6c7ec6bbf2a7fed23db6
+
 Backend Project using Node, Express, Prisma ORM and MySQL (Dockerized).
-
-
 This repository contains a complete backend API for managing movies and series.  
 It includes user authentication, media management, personal libraries, comments, and more.
 
