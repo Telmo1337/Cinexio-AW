@@ -31,7 +31,7 @@ model Media {
   id          String     @id @default(uuid())
   title       String     
   type        MediaType
-  category    String
+  category    Json
   releaseYear Int
   endYear     Int?
   image       String?     

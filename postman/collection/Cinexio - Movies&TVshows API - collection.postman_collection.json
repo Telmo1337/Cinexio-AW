@@ -1,7 +1,8 @@
 {
 	"info": {
 		"_postman_id": "d97f8ab2-89c2-4575-85f9-95896f1e4e8b",
-		"name": "ProjetoAW - FILMES/SÉRIES",
+		"name": "Cinexio - Movies&TVshows API - collection",
+		"description": "StartFragment\n\nCinexio is a RESTful API designed for managing movies and TV shows, including user authentication, personal libraries, comments, ratings, and media discovery.  \n  \nThis Postman collection contains all endpoints required to interact with the Cinexio backend, organized into clear sections for easy testing.\n\n### **Features Included**\n\n- **User Authentication**  \n      \n    Register, login, and retrieve user information using JWT-based authentication.\n    \n- **Media Management**  \n      \n    Create, list, search, update, and delete movies or TV shows.  \n      \n    Includes filtering by category, searching by title, and retrieving media by creator.\n    \n- **Personal Library**  \n      \n    Add media to a user’s library, mark as favorite or watched, schedule viewing dates, manage notes, and retrieve library statistics.\n    \n- **Comments System**  \n      \n    Add comments, edit or delete them, list comments by media or by user.\n    \n\n### **Usage**\n\n1. Authenticate using the **Login** endpoint.\n    \n2. The JWT token is stored automatically in `{{token}}`.\n    \n3. Use authenticated routes under the **REQ – ONLY AUTHENTICATED** folder.\n    \n4. All dynamic values (mediaId, commentId, userId, etc.) are stored automatically in environment variables.\n    \n\nEndFragment",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33211120"
 	},
@@ -226,7 +227,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"title\": \"Família Soprano\",\r\n  \"type\": \"SERIES\",\r\n  \"category\": \"Crime, Gângster, Drama\",\r\n  \"releaseYear\": 1999,\r\n  \"endYear\": 2007,\r\n  \"rating\": 9.2,\r\n  \"description\": \"O chefe da máfia de Nova Jersey lida com questões pessoais e profissionais que afetam seu estado mental, levando-o a procurar aconselhamento psiquiátrico.\"\r\n}\r\n",
+									"raw": "{\r\n  \"title\": \"Família Soprano\",\r\n  \"type\": \"SERIES\",\r\n  \"category\": [\"Crime\", \"Mafia\"],\r\n  \"releaseYear\": 1999,\r\n  \"endYear\": 2007,\r\n  \"rating\": 9.2,\r\n  \"description\": \"O chefe da máfia de Nova Jersey lida com questões pessoais e profissionais que afetam seu estado mental, levando-o a procurar aconselhamento psiquiátrico.\"\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -369,6 +370,42 @@
 										"v1",
 										"media",
 										"{{mediaId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET movie by category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/media/bycategory?category=Crime",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"media",
+										"bycategory"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "Crime"
+										}
 									]
 								}
 							},

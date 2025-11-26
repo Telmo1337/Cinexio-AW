@@ -10,7 +10,7 @@ const mediaRouter = Router();
 const mediaSchema = z.object({
     title: z.string().min(1, "Title is required"),
     type: z.enum(["MOVIE", "SERIES"]),
-    category: z.string().min(1, "Category is required"),
+    category: z.array(z.string()).min(1, "Category is required"),
     releaseYear: z.coerce.number().min(1900).max(new Date().getFullYear(), "Invalid release year"),
     endYear: z.coerce.number().min(1900).max(new Date().getFullYear()).optional(),
     rating: z.coerce.number().min(0).max(10, "Rating must be between 0 and 10").optional(),
@@ -23,7 +23,7 @@ const mediaSchema = z.object({
 const mediaUpdateSchema = z.object({
     title: z.string().min(1, "Title is required").optional(),
     type: z.enum(["MOVIE", "SERIES"]).optional(),
-    category: z.string().min(1, "Category is required").optional(),
+    category: z.array(z.string()).min(1, "At least one category is required").optional(),
     releaseYear: z.coerce.number().min(1900).max(new Date().getFullYear(), "Invalid release year").optional(),
     endYear: z.coerce.number().min(1900).max(new Date().getFullYear()).optional(),
     rating: z.coerce.number().min(0).max(10, "Rating must be between 0 and 10").optional(),
@@ -33,6 +33,36 @@ const mediaUpdateSchema = z.object({
 const commentSchema = z.object({
   content: z.string().min(1, "Content is required"),
 });
+
+
+//encontrar filme ou serie por categoria
+mediaRouter.get("/bycategory", verifyToken, async (req, res, next) => {
+  try {
+    const { category } = req.query;
+
+    if (!category || category.trim() === "") {
+      return res.status(400).json({ err: "category query parameter is required" });
+    }
+
+    const media = await prisma.media.findMany();
+
+    // filtrar em javascript (ja que o prisma nao suporta arrays em queries)
+    const filtered = media.filter(item => 
+      Array.isArray(item.category) && item.category.includes(category)
+    );
+
+    res.json({
+      success: true,
+      count: filtered.length,
+      data: filtered
+    });
+
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 
 // Criar comentário para um media
 mediaRouter.post("/:mediaId/comments", verifyToken, async (req, res, next) => {
