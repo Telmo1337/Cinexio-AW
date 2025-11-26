@@ -3,8 +3,7 @@
   <img src="cinexio.svg" alt="Cinexio Logo" width="180" />
 </p>
 
-# Web Applications - Movie & Series Management API
-=======
+
 # CINEXIO - Web Applications Movie & Series Management API 
 
 Backend Project using Node, Express, Prisma ORM and MySQL (Dockerized).
