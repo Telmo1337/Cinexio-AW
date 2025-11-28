@@ -48,6 +48,8 @@ model User {
 
   refreshTokens RefreshToken[]
   passwordResets PasswordReset[]
+
+  commentLikes CommentLike[] 
 }
 
 
@@ -171,10 +173,30 @@ model Comment {
 
   user  User  @relation(fields: [userId], references: [id])
   media Media @relation(fields: [mediaId], references: [id])
+  likes   CommentLike[] 
 
   @@index([userId], map: "Comment_userId_fkey")
   @@index([mediaId], map: "Comment_mediaId_fkey")
 }
+
+//tabela de likes em comentários feitos pelos utilizadores
+//table of likes on comments made by users
+model CommentLike {
+  id        String   @id @default(uuid())
+  userId    String
+  commentId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  comment Comment @relation(fields: [commentId], references: [id])
+
+  // Impede like duplicado do mesmo user no mesmo comment
+  // Prevents duplicate like from the same user on the same comment
+  @@unique([userId, commentId])
+  @@index([commentId])
+}
+
+
 
 //definição de tipo de media
 //media type definition

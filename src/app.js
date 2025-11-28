@@ -12,6 +12,7 @@ import libraryRouter from "./routes/library.routes.js";
 import commentRouter from "./routes/comments.routes.js";
 import mediaRouter from "./routes/media.routes.js";
 import listRouter from "./routes/list.routes.js";
+import commentLikesRoutes from "./routes/commentLikes.routes.js";
 
 //importar middleware global de tratamento de erros
 //import middleware global error handler
@@ -58,7 +59,7 @@ app.use("/api/v1/media", mediaRouter); //rotas de filmes/series
 app.use("/api/v1/library", libraryRouter); //rotas da biblioteca pessoal
 app.use("/api/v1/comments", commentRouter); //rotas de comentários
 app.use("/api/v1/lists", listRouter); //rotas de listas pessoais
-
+app.use("/api/v1/comment-likes", commentLikesRoutes);
 
 
 //rota base
