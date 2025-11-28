@@ -10,9 +10,8 @@ Backend Project using Node, Express, Prisma ORM and MySQL (Dockerized).
 This repository contains a complete backend API for managing movies and series.  
 It includes user authentication, media management, personal libraries, comments, and more.
 
-
 ## Table of Contents
-- [About the Project](#cinexio---web-applications-movie--series-management-api)
+- [Project Structure](#project-structure)
 - [Installation and Execution](#installation-and-execution)
 - [Requirements](#1-requirements)
 - [Clone the Repository](#2-clone-the-repository)
@@ -24,7 +23,34 @@ It includes user authentication, media management, personal libraries, comments,
 - [Stop Environment](#8-how-to-stop-the-environment)
 - [Important Notes](#important-to-know)
 
+---
 
+## Full Documentation (Notion):  
+[Full documentation (only in pt-PT, soon in EN)](https://www.notion.so/Relat-rio-do-projeto-para-disciplina-de-Aplica-es-Web-2af28957f40880f98d05e2a2e9af4130?source=copy_link)
+
+---
+
+## Project Structure
+
+src/
+ ├── routes/
+ │    ├── auth.routes.js
+ │    ├── user.routes.js
+ │    ├── media.routes.js
+ │    ├── library.routes.js
+ │    ├── list.routes.js
+ │    ├── comments.routes.js
+ │    └── commentLikes.routes.js
+ ├── controllers/
+ ├── services/
+ ├── schemas/
+ ├── utils/
+ ├── db/prisma.js
+ └── app.js
+docker-compose.yml
+Dockerfile
+
+---
 
 # Installation and Execution
 
@@ -201,4 +227,7 @@ Example:
 
 ---
 
-© 2025 – Academic project develop by Telmo Regalado and Tiago Silva
+© 2025 – Academic project developed by  
+**Telmo Regalado**   
+**Tiago Silva** 
+IPVC – ESTG, CTESP - DWM
