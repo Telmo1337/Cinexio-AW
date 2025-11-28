@@ -12,56 +12,119 @@ enum UserRole {
   MEMBER
 }
 
+enum ProfilePrivacy {  
+  PUBLIC
+  FRIENDS
+  PRIVATE
+}
 
 model User {
-  id        String     @id @default(uuid())
-  firstName String
-  lastName  String
-  nickName  String     @unique
-  email     String     @unique
-  password  String
-  role      UserRole   @default(MEMBER) 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime?
-  media     UserMedia[]
-  comments  Comment[]
-  medias    Media[]
+  id          String         @id @default(uuid())
+  firstName   String
+  lastName    String
+  nickName    String         @unique
+  email       String         @unique
+  password    String
+  avatar      String?
+  bio         String?
+  preferences Json?
+  language    String?        @default("EN")
+  role        UserRole       @default(MEMBER)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime?
+  privacy     ProfilePrivacy @default(PUBLIC)
+  media       UserMedia[]
+  comments    Comment[]
+  medias      Media[]
+
+  lists List[]
+
+  refreshTokens RefreshToken[]
+  passwordResets PasswordReset[]
 }
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model PasswordReset {       
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  used      Boolean  @default(false)
+}
+
 model Media {
-  id          String     @id @default(uuid())
-  title       String     
+  id          String      @id @default(uuid())
+  title       String
   type        MediaType
   category    Json
   releaseYear Int
   endYear     Int?
-  image       String?     
+  image       String?
   rating      Int?
   description String?
-  createdAt   DateTime   @default(now())
+  createdAt   DateTime    @default(now())
   userId      String
   users       UserMedia[]
   comments    Comment[]
   user        User        @relation(fields: [userId], references: [id])
+  listItems   ListItem[]
 
   @@index([userId], map: "Media_userId_fkey")
 }
 
-
 model UserMedia {
-  id          String   @id @default(uuid())
-  userId      String
-  mediaId     String
-  favorite    Boolean  @default(false)
-  watched     Boolean  @default(false)
-  rating      Int?
-  notes       String?
-  calendarAt  DateTime?
+  id         String    @id @default(uuid())
+  userId     String
+  mediaId    String
+  favorite   Boolean   @default(false)
+  watched    Boolean   @default(false)
+  rating     Int?
+  notes      String?
+  calendarAt DateTime?
 
-  user   User  @relation(fields: [userId], references: [id])
-  media  Media @relation(fields: [mediaId], references: [id])
+  user   User        @relation(fields: [userId], references: [id])
+  media  Media       @relation(fields: [mediaId], references: [id])
+  status WatchStatus @default(WANT_TO_WATCH)
 
   @@unique([userId, mediaId]) // impede duplicar o mesmo filme para o mesmo user
   @@index([mediaId], map: "UserMedia_mediaId_fkey")
+}
+
+model List {
+  id        String     @id @default(uuid())
+  name      String
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  items     ListItem[]
+  privacy   Privacy    @default(PRIVATE)
+  createdAt DateTime   @default(now())
+}
+
+model ListItem {
+  id      String @id @default(uuid())
+  listId  String
+  mediaId String
+
+  list  List  @relation(fields: [listId], references: [id])
+  media Media @relation(fields: [mediaId], references: [id])
+
+  addedAt DateTime @default(now())
+
+  @@unique([listId, mediaId])
+}
+
+enum Privacy {
+  PUBLIC
+  PRIVATE
 }
 
 model Comment {
@@ -71,8 +134,8 @@ model Comment {
   mediaId   String
   createdAt DateTime @default(now())
 
-  user   User  @relation(fields: [userId], references: [id])
-  media  Media @relation(fields: [mediaId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+  media Media @relation(fields: [mediaId], references: [id])
 
   @@index([userId], map: "Comment_userId_fkey")
   @@index([mediaId], map: "Comment_mediaId_fkey")
@@ -81,4 +144,11 @@ model Comment {
 enum MediaType {
   MOVIE
   SERIES
+}
+
+enum WatchStatus {
+  WANT_TO_WATCH
+  WATCHING
+  WATCHED
+  ABANDONED
 }

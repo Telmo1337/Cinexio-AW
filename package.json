@@ -8,8 +8,8 @@
     "dev": "nodemon src/app.js",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
-    "projectAW": "docker compose down -v && docker compose up -d --build",
-    "projectAW-stop": "docker compose down -v"
+    "projectAW": "docker compose down && docker compose up -d --build",
+    "projectAW-stop": "docker compose down"
   },
   "keywords": [],
   "author": "",
