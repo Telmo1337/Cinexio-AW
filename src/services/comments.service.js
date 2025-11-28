@@ -4,9 +4,7 @@ import { prisma } from "../db/prisma.js";
 import { updateCommentSchema } from "../schemas/comments.schema.js";
 
 
-// ==========================================================
 // LISTAR TODOS OS COMENTÁRIOS FEITOS POR UM UTILIZADOR
-// ==========================================================
 export async function getCommentsByUserService(nickName) {
 
   // Obter todos os comentários feitos pelo user
@@ -25,9 +23,7 @@ export async function getCommentsByUserService(nickName) {
 
 
 
-// ==========================================================
 // EDITAR COMENTÁRIO (apenas autor)
-// ==========================================================
 export async function updateCommentService(commentId, body, user) {
 
   // Validar conteúdo
@@ -61,9 +57,7 @@ export async function updateCommentService(commentId, body, user) {
 
 
 
-// ==========================================================
 // APAGAR COMENTÁRIO (autor ou admin)
-// ==========================================================
 export async function deleteCommentService(commentId, user) {
 
   const comment = await prisma.comment.findUnique({

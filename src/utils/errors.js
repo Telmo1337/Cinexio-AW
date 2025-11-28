@@ -1,10 +1,13 @@
+
+//utilidades para tratamento de erros
+// Utility functions for error handling
 export class ApiError extends Error {
     constructor(message, status = 500) {
         super(message);
         this.status = status;
     }
 }
-
+// Erros HTTP comuns
 export function badRequest(message) {
     return new ApiError(message, 400);
 }

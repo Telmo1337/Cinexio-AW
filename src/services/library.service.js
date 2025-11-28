@@ -5,9 +5,8 @@ import { prisma } from "../db/prisma.js";
 import { updateLibrarySchema } from "../schemas/library.schema.js";
 
 
-// ====================================================================
+
 // BIBLIOTECA PÚBLICA DE OUTRO USER
-// ====================================================================
 export async function getPublicLibraryService(nickName) {
 
   const user = await prisma.user.findUnique({
@@ -44,9 +43,8 @@ export async function getPublicLibraryService(nickName) {
 
 
 
-// ====================================================================
+
 // ESTATÍSTICAS DA BIBLIOTECA
-// ====================================================================
 export async function getLibraryStatsService(userId) {
 
   const items = await prisma.userMedia.findMany({
@@ -87,9 +85,8 @@ export async function getLibraryStatsService(userId) {
 
 
 
-// ====================================================================
+
 // LISTAR FAVORITOS
-// ====================================================================
 export async function getFavoritesService(userId) {
 
   return await prisma.userMedia.findMany({
@@ -100,9 +97,8 @@ export async function getFavoritesService(userId) {
 
 
 
-// ====================================================================
+
 // LISTAR VISTOS
-// ====================================================================
 export async function getWatchedService(userId) {
 
   return await prisma.userMedia.findMany({
@@ -113,9 +109,8 @@ export async function getWatchedService(userId) {
 
 
 
-// ====================================================================
+
 // LISTAR BIBLIOTECA COMPLETA
-// ====================================================================
 export async function getUserLibraryService(userId) {
 
   return await prisma.userMedia.findMany({
@@ -126,9 +121,8 @@ export async function getUserLibraryService(userId) {
 
 
 
-// ====================================================================
+
 // ATUALIZAR ENTRADA DA BIBLIOTECA
-// ====================================================================
 export async function updateLibraryEntryService(userId, mediaId, body) {
 
   // Validar dados com Zod
@@ -173,9 +167,8 @@ export async function updateLibraryEntryService(userId, mediaId, body) {
 
 
 
-// ====================================================================
+
 // ADICIONAR MEDIA À BIBLIOTECA
-// ====================================================================
 export async function addToLibraryService(userId, mediaId) {
 
   // Verificar se existe media
@@ -196,9 +189,8 @@ export async function addToLibraryService(userId, mediaId) {
 
 
 
-// ====================================================================
+
 // REMOVER MEDIA DA BIBLIOTECA
-// ====================================================================
 export async function removeFromLibraryService(userId, mediaId) {
 
   await prisma.userMedia.delete({

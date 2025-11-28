@@ -12,9 +12,8 @@ import { updateCommentSchema } from "../schemas/comments.schema.js";
 import { validateSchema } from "../utils/validation.js";
 
 
-// ===============================
-// LISTAR COMENTÁRIOS DE UM USER
-// ===============================
+
+// VER COMENTÁRIOS DE UM USER
 export async function getCommentsByUser(req, res, next) {
   try {
   
@@ -32,9 +31,8 @@ export async function getCommentsByUser(req, res, next) {
   }
 }
 
-// ===============================
+
 // EDITAR COMENTÁRIO
-// ===============================
 export async function updateComment(req, res, next) {
   try {
     
@@ -54,9 +52,8 @@ export async function updateComment(req, res, next) {
   }
 }
 
-// ===============================
+
 // APAGAR COMENTÁRIO
-// ===============================
 export async function deleteComment(req, res, next) {
   try {
    

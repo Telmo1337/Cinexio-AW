@@ -26,9 +26,7 @@ import {
 import { validateSchema } from "../utils/validation.js";
 
 
-// ============================
 // VER PERFIL COM PRIVACIDADE
-// ============================
 export async function getUserProfile(req, res, next) {
   try {
     const { nickName } = validateSchema(
@@ -46,9 +44,7 @@ export async function getUserProfile(req, res, next) {
 }
 
 
-// ============================
 // LISTAR USERS (ADMIN)
-// ============================
 export async function getAllUsers(req, res, next) {
   try {
     const { page, pageSize } = req.query;
@@ -63,9 +59,7 @@ export async function getAllUsers(req, res, next) {
 }
 
 
-// ============================
 // VER MEDIA DE UM USER
-// ============================
 export async function getUserMedia(req, res, next) {
   try {
   
@@ -85,9 +79,7 @@ export async function getUserMedia(req, res, next) {
 }
 
 
-// ============================
 // ATUALIZAR PERFIL
-// ============================
 export async function updateProfile(req, res, next) {
   try {
     const body = validateSchema(updateProfileSchema, req.body);
@@ -101,9 +93,7 @@ export async function updateProfile(req, res, next) {
 }
 
 
-// ============================
 // ATUALIZAR PRIVACIDADE
-// ============================
 export async function updatePrivacy(req, res, next) {
   try {
     const { privacy } = validateSchema(updatePrivacySchema, req.body);
@@ -117,9 +107,7 @@ export async function updatePrivacy(req, res, next) {
 }
 
 
-// ============================
 // ATUALIZAR AVATAR
-// ============================
 export async function updateAvatar(req, res, next) {
   try {
     const { avatar } = validateSchema(updateAvatarSchema, req.body);

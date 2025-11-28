@@ -11,23 +11,29 @@ import {
   resetPassword
 } from "../controllers/auth.controller.js";
 
-// Criar router isolado para o módulo de autenticação
+//criar router isolado para o módulo de autenticação
+//create isolated router for auth module
 const router = Router();
 
-// Rota de registo
+//rota de registo
+//Registration route
 router.post("/register", register);
 
 // Rota de login
+//Login route
 router.post("/login", login);
 
-// Rota de logout (remoção do refresh token)
+//rota de logout 
+//Logout route (removal of refresh token)
 router.post("/logout", logout);
 
-// Rota para solicitar recuperação da palavra-passe
+//rota para recuperação de palavra-passe
+//Route to request password recovery
 router.post("/forgot-password", forgotPassword);
 
-// Rota para redefinir a palavra-passe
+//rota para redefinir a palavra-passe
+//Route to reset password
 router.post("/reset-password", resetPassword);
 
-// Exportar router para ser usado na aplicação
+
 export default router;

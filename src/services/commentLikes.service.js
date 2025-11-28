@@ -29,7 +29,7 @@ export async function toggleCommentLikeService(commentId, userId) {
   return { liked: true, message: "Like added" };
 }
 
-
+// Ver quem deu like (opcional)
 export async function getCommentLikesService(commentId) {
   const likes = await prisma.commentLike.findMany({
     where: { commentId },

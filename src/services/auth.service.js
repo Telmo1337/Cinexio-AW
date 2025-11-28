@@ -12,9 +12,7 @@ function generateRefreshToken() {
   return crypto.randomBytes(40).toString("hex");
 }
 
-// =============================================
 // REGISTAR UTILIZADOR
-// =============================================
 export async function registerUser({ email, firstName, lastName, nickName, password }) {
 
   // Verificar se email ou nickName já existem
@@ -52,9 +50,7 @@ export async function registerUser({ email, firstName, lastName, nickName, passw
   return { user: cleanUser, token };
 }
 
-// =============================================
 // LOGIN
-// =============================================
 export async function loginUser({ identifier, password }) {
 
   // Procurar user por email ou nickname
@@ -95,9 +91,7 @@ export async function loginUser({ identifier, password }) {
   };
 }
 
-// =============================================
 // LOGOUT (remoção do refresh token)
-// =============================================
 export async function logoutUser(refreshToken) {
   if (!refreshToken) throw new Error("Refresh token is required");
 
@@ -106,9 +100,7 @@ export async function logoutUser(refreshToken) {
   return { message: "Logged out successfully" };
 }
 
-// =============================================
 // PEDIDO DE RECUPERAÇÃO DA PASSWORD
-// =============================================
 export async function forgotPasswordService(email) {
 
   const user = await prisma.user.findUnique({ where: { email } });
@@ -128,9 +120,7 @@ export async function forgotPasswordService(email) {
   };
 }
 
-// =============================================
 // DEFINIR NOVA PASSWORD
-// =============================================
 export async function resetPasswordService(token, newPassword) {
 
   // Verificar se o token é válido e não foi usado

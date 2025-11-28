@@ -18,6 +18,7 @@ import {
 const router = Router();
 
 // Ver perfil com regras de privacidade
+
 router.get("/:nickName/profile", verifyToken, getUserProfile);
 
 // Listar todos os users (apenas ADMIN)

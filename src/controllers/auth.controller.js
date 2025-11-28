@@ -22,9 +22,8 @@ import { validateSchema } from "../utils/validation.js";
 
 
 
-// ============================
-// REGISTER
-// ============================
+
+//REGISTER
 export async function register(req, res, next) {
   try {
 
@@ -42,9 +41,8 @@ export async function register(req, res, next) {
 }
 
 
-// ============================
-// LOGIN
-// ============================
+
+//LOGIN
 export async function login(req, res, next) {
   try {
 
@@ -61,9 +59,8 @@ export async function login(req, res, next) {
 }
 
 
-// ============================
-// LOGOUT
-// ============================
+
+//LOGOUT
 export async function logout(req, res, next) {
   try {
     const { refreshToken } = req.body;
@@ -75,9 +72,8 @@ export async function logout(req, res, next) {
 }
 
 
-// ============================
-// FORGOT PASSWORD
-// ============================
+
+//FORGOT PASSWORD
 export async function forgotPassword(req, res, next) {
   try {
     
@@ -94,9 +90,8 @@ export async function forgotPassword(req, res, next) {
 }
 
 
-// ============================
-// RESET PASSWORD
-// ============================
+
+//RESET PASSWORD
 export async function resetPassword(req, res, next) {
   try {
 

@@ -26,9 +26,7 @@ import {
 import { validateSchema } from "../utils/validation.js";
 
 
-// ==========================
 // TOP 10 MOVIES
-// ==========================
 export async function getTopMovies(req, res, next) {
   try {
     const result = await getTopMoviesService();
@@ -40,9 +38,7 @@ export async function getTopMovies(req, res, next) {
 }
 
 
-// ==========================
 // TOP 10 SERIES
-// ==========================
 export async function getTopSeries(req, res, next) {
   try {
     const result = await getTopSeriesService();
@@ -53,9 +49,7 @@ export async function getTopSeries(req, res, next) {
 }
 
 
-// ==========================
 // GLOBAL RANKING
-// ==========================
 export async function getGlobalRanking(req, res, next) {
   try {
     const result = await getGlobalRankingService();
@@ -66,9 +60,7 @@ export async function getGlobalRanking(req, res, next) {
 }
 
 
-// ==========================
 // FILTRAR POR CATEGORIA
-// ==========================
 export async function getMediaByCategory(req, res, next) {
   try {
     
@@ -84,9 +76,7 @@ export async function getMediaByCategory(req, res, next) {
 }
 
 
-// ==========================
 // CRIAR COMENTÁRIO
-// ==========================
 export async function createComment(req, res, next) {
   try {
    
@@ -108,9 +98,7 @@ export async function createComment(req, res, next) {
   }
 }
 
-// ==========================
 // LISTAR COMENTÁRIOS
-// ==========================
 export async function listComments(req, res, next) {
   try {
    
@@ -126,9 +114,7 @@ export async function listComments(req, res, next) {
 }
 
 
-// ==========================
 // CRIAR MEDIA
-// ==========================
 export async function createMedia(req, res, next) {
   try {
     
@@ -145,9 +131,7 @@ export async function createMedia(req, res, next) {
 }
 
 
-// ==========================
 // LISTAR TODOS MEDIA
-// ==========================
 export async function listAllMedia(req, res, next) {
   try {
    
@@ -164,9 +148,7 @@ export async function listAllMedia(req, res, next) {
 }
 
 
-// ==========================
 // PESQUISAR POR TÍTULO
-// ==========================
 export async function searchMediaByTitle(req, res, next) {
   try {
     
@@ -182,9 +164,7 @@ export async function searchMediaByTitle(req, res, next) {
 }
 
 
-// ==========================
 // OBTER POR ID
-// ==========================
 export async function getMediaById(req, res, next) {
   try {
     
@@ -205,9 +185,7 @@ export async function getMediaById(req, res, next) {
 }
 
 
-// ==========================
 // ATUALIZAR MEDIA
-// ==========================
 export async function updateMedia(req, res, next) {
   try {
     
@@ -228,9 +206,7 @@ export async function updateMedia(req, res, next) {
 }
 
 
-// ==========================
 // APAGAR MEDIA
-// ==========================
 export async function deleteMedia(req, res, next) {
   try {
     

@@ -5,9 +5,7 @@ import { prisma } from "../db/prisma.js";
 import { mediaSchema, mediaUpdateSchema, commentSchema } from "../schemas/media.schema.js";
 
 
-// ========================================================
 //  TOP 10 MOVIES BASEADO NAS MÉDIAS DO userMedia
-// ========================================================
 export async function getTopMoviesService() {
 
   // 1. Obter ranking global ordenado pela média mais alta
@@ -40,9 +38,7 @@ export async function getTopMoviesService() {
 
 
 
-// ========================================================
 //  TOP 10 SERIES BASEADO NAS MÉDIAS
-// ========================================================
 export async function getTopSeriesService() {
 
   const ranking = await prisma.userMedia.groupBy({
@@ -71,9 +67,7 @@ export async function getTopSeriesService() {
 
 
 
-// ========================================================
 //  RANKING GLOBAL (TODOS OS MEDIA ORDENADOS PELA MÉDIA)
-// ========================================================
 export async function getGlobalRankingService() {
 
   const rankings = await prisma.userMedia.groupBy({
@@ -97,9 +91,7 @@ export async function getGlobalRankingService() {
 
 
 
-// ========================================================
 //  OBTER MEDIA POR CATEGORIA (FILTRA EM JS)
-// ========================================================
 export async function getMediaByCategoryService(category) {
 
   if (!category || category.trim() === "") {
@@ -122,9 +114,7 @@ export async function getMediaByCategoryService(category) {
 
 
 
-// ========================================================
 //  CRIAR COMENTÁRIO
-// ========================================================
 export async function createCommentService(mediaId, body, user) {
 
   // Validar corpo do pedido
@@ -151,9 +141,7 @@ export async function createCommentService(mediaId, body, user) {
 
 
 
-// ========================================================
 //  LISTAR COMENTÁRIOS DE UM MEDIA
-// ========================================================
 export async function listCommentsService(mediaId) {
 
   const comments = await prisma.comment.findMany({
@@ -168,9 +156,7 @@ export async function listCommentsService(mediaId) {
 
 
 
-// ========================================================
 //  CRIAR MEDIA (MOVIE / SERIES)
-// ========================================================
 export async function createMediaService(body, user) {
   if (user.role !== "ADMIN") {
     throw new Error("Only admins can create media");
@@ -201,9 +187,7 @@ export async function createMediaService(body, user) {
 }
 
 
-// ========================================================
 //  LISTAR TODOS OS MEDIA COM PAGINAÇÃO + SORTING
-// ========================================================
 export async function listAllMediaService(query) {
 
   let { page = 1, pageSize = 10, sort = "createdAt", order = "desc" } = query;
@@ -240,9 +224,7 @@ export async function listAllMediaService(query) {
 
 
 
-// ========================================================
 //  PESQUISAR MEDIA POR TÍTULO (INSENSITIVE)
-// ========================================================
 export async function searchMediaByTitleService(query) {
 
   const { title } = query;
@@ -291,9 +273,7 @@ export async function searchMediaByTitleService(query) {
 
 
 
-// ========================================================
 //  OBTER MEDIA POR ID
-// ========================================================
 export async function getMediaByIdService(id) {
 
   const media = await prisma.media.findUnique({
@@ -310,9 +290,7 @@ export async function getMediaByIdService(id) {
 
 
 
-// ========================================================
 //  ATUALIZAR MEDIA
-// ========================================================
 export async function updateMediaService(id, body, user) {
 
   if (user.role !== "ADMIN") {
@@ -337,9 +315,7 @@ export async function updateMediaService(id, body, user) {
 
 
 
-// ========================================================
 //  APAGAR MEDIA
-// ========================================================
 export async function deleteMediaService(id, user) {
 
   if (user.role !== "ADMIN") {

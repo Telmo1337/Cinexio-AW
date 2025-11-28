@@ -4,9 +4,7 @@ import { prisma } from "../db/prisma.js";
 import { listCreateSchema, listPrivacySchema } from "../schemas/list.schema.js";
 
 
-// ====================================================================
 // CRIAR LISTA
-// ====================================================================
 export async function createListService(userId, body) {
 
   const parsed = listCreateSchema.safeParse(body);
@@ -25,9 +23,7 @@ export async function createListService(userId, body) {
 
 
 
-// ====================================================================
 // LISTAS DO UTILIZADOR (MY LISTS)
-// ====================================================================
 export async function getMyListsService(userId) {
 
   return await prisma.list.findMany({
@@ -39,9 +35,7 @@ export async function getMyListsService(userId) {
 
 
 
-// ====================================================================
 // VER LISTA POR ID (RESPEITAR PRIVACIDADE)
-// ====================================================================
 export async function getListByIdService(listId, requesterId) {
 
   const list = await prisma.list.findUnique({
@@ -66,9 +60,7 @@ export async function getListByIdService(listId, requesterId) {
 
 
 
-// ====================================================================
 // APAGAR LISTA
-// ====================================================================
 export async function deleteListService(listId, userId) {
 
   const list = await prisma.list.findUnique({ where: { id: listId } });
@@ -89,9 +81,7 @@ export async function deleteListService(listId, userId) {
 
 
 
-// ====================================================================
 // ALTERAR PRIVACIDADE
-// ====================================================================
 export async function changeListPrivacyService(listId, userId, body) {
 
   const parsed = listPrivacySchema.safeParse(body);
@@ -114,9 +104,7 @@ export async function changeListPrivacyService(listId, userId, body) {
 
 
 
-// ====================================================================
 // ADICIONAR MEDIA À LISTA
-// ====================================================================
 export async function addMediaToListService(listId, mediaId, userId) {
 
   const list = await prisma.list.findUnique({ where: { id: listId } });
@@ -142,9 +130,7 @@ export async function addMediaToListService(listId, mediaId, userId) {
 
 
 
-// ====================================================================
 // REMOVER MEDIA DA LISTA
-// ====================================================================
 export async function removeMediaFromListService(listId, mediaId, userId) {
 
   const list = await prisma.list.findUnique({ where: { id: listId } });

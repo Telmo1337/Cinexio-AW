@@ -3,9 +3,7 @@
 import { prisma } from "../db/prisma.js";
 
 
-// =====================================================
 // VER PERFIL COM REGRAS DE PRIVACIDADE
-// =====================================================
 export async function getUserProfileService(nickName, requesterUser) {
 
   // Procurar utilizador pelo nickName
@@ -49,9 +47,7 @@ export async function getUserProfileService(nickName, requesterUser) {
 }
 
 
-// =====================================================
 // LISTAR USERS (ADMIN)
-// =====================================================
 export async function getAllUsersService(page = 1, pageSize = 10) {
 
   page = Number(page);
@@ -86,9 +82,7 @@ export async function getAllUsersService(page = 1, pageSize = 10) {
 }
 
 
-// =====================================================
 // OBTER MEDIA CRIADOS POR UM USER
-// =====================================================
 export async function getUserMediaService(nickName, page = 1, pageSize = 10) {
 
   page = Number(page);
@@ -129,9 +123,7 @@ export async function getUserMediaService(nickName, page = 1, pageSize = 10) {
 }
 
 
-// =====================================================
 // ATUALIZAR PERFIL
-// =====================================================
 export async function updateUserProfileService(userId, body) {
 
   const { bio, preferences, language } = body;
@@ -153,9 +145,7 @@ export async function updateUserProfileService(userId, body) {
 }
 
 
-// =====================================================
 // ATUALIZAR PRIVACIDADE
-// =====================================================
 export async function updateUserPrivacyService(userId, privacy) {
 
   if (!["PUBLIC", "FRIENDS", "PRIVATE"].includes(privacy)) {
@@ -174,9 +164,7 @@ export async function updateUserPrivacyService(userId, privacy) {
 }
 
 
-// =====================================================
 // ATUALIZAR AVATAR
-// =====================================================
 export async function updateUserAvatarService(userId, avatar) {
 
   if (!avatar) throw new Error("Avatar URL is required");

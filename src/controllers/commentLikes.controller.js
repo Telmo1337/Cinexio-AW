@@ -7,6 +7,7 @@ import { z } from "zod";
 import { validateSchema } from "../utils/validation.js";
 
 
+// Like / unlike
 export async function toggleCommentLike(req, res, next) {
   try {
     const { commentId } = validateSchema(
@@ -23,6 +24,7 @@ export async function toggleCommentLike(req, res, next) {
   }
 }
 
+// Ver quem deu like (opcional)
 export async function getCommentLikes(req, res, next) {
   try {
     
